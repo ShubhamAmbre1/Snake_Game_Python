@@ -26,19 +26,16 @@ while run:
             run = False
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                if x == 10:
-                    continue
-                else:
-                    x1_change = -10
-                    y1_change = 0
-            elif event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_LEFT and x1_change != 10:
+                x1_change = -10
+                y1_change = 0
+            elif event.key == pygame.K_RIGHT and x1_change != -10:
                 x1_change = 10
                 y1_change = 0
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP and y1_change != 10:
                 x1_change = 0
                 y1_change = -10
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN and y1_change != -10:
                 x1_change = 0
                 y1_change = 10
 
