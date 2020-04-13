@@ -1,5 +1,5 @@
 import pygame
-
+import time
 pygame.init()
 
 screen = pygame.display.set_mode((500, 500))
@@ -15,6 +15,12 @@ x1_change = 0                               #change in position
 y1_change = 0                               #change in position
 
 clock = pygame.time.Clock()
+font_style = pygame.font.SysFont(None, 50)
+
+def message(msg):
+    mesg = font_style.render(msg, True, (255,0,0))
+    screen.blit(mesg, [250, 250])
+
 
 run = True
 while run:
@@ -41,8 +47,15 @@ while run:
 
     x += x1_change
     y += y1_change
+
     screen.fill((255,255,255))
     pygame.draw.rect(screen, (255,0,0), [x,y, width, height])
+
     pygame.display.update()
     clock.tick(30)
+
+message("You lost")
+pygame.display.update()
+time.sleep(2)
 pygame.quit()
+quit()
