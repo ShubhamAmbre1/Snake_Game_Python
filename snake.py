@@ -1,61 +1,98 @@
 import pygame
 import time
+import random
+
 pygame.init()
 
-screen = pygame.display.set_mode((500, 500))
+dis_width = 800
+dis_height = 600
+
+#Colors
+white =(255, 255,255)
+black =(0,0,0)
+red= (255,0,0)
+blue = (0,0,255)
+
+
+#Display
+screen = pygame.display.set_mode((dis_width, dis_height))
 pygame.display.set_caption('Snake Game')
 
-x = 250                                     #snake's position on x
-y = 250                                     #snake's position on y
+snake_body = 10
+snake_speed = 30
 
-width = 20                                  #snake width
-height = 20                                 #snake height
+clock = pygame.time.Clock()                 #For Referesh rate/ Snake's speed
+font_style = pygame.font.SysFont(None, 30)
 
-x1_change = 0                               #change in position
-y1_change = 0                               #change in position
+def message(msg, color):
+    mesg = font_style.render(msg, True, color)
+    screen.blit(mesg, [dis_width/3, dis_height/3])
 
-clock = pygame.time.Clock()
-font_style = pygame.font.SysFont(None, 50)
+def gameloop():
+    close = False
+    run = False
 
-def message(msg):
-    mesg = font_style.render(msg, True, (255,0,0))
-    screen.blit(mesg, [250, 250])
+    x = dis_width/2                                     #snake's position on x
+    y = dis_height/2                                     #snake's position on y
+
+    x1_change = 0                               #change in position
+    y1_change = 0                               #change in position
 
 
-run = True
-while run:
+    fx = round(random.randrange(0, 800 - 10)/ 10.0)* 10.0
+    fy = round(random.randrange(0, 800 - 10)/ 10.0)* 10.0
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and x1_change != 10:
-                x1_change = -10
-                y1_change = 0
-            elif event.key == pygame.K_RIGHT and x1_change != -10:
-                x1_change = 10
-                y1_change = 0
-            elif event.key == pygame.K_UP and y1_change != 10:
-                x1_change = 0
-                y1_change = -10
-            elif event.key == pygame.K_DOWN and y1_change != -10:
-                x1_change = 0
-                y1_change = 10
-        if x >= 500 or x <= 0 or y >= 500 or y <= 0:
-            run = False
+    while not run:
+        while close == True:
+            screen.fill(white)
+            message("you lost noob!", red)
+            pygame.display.update()
 
-    x += x1_change
-    y += y1_change
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        run = True
+                        close = False
+                    if event.key == pygame.K_c:
+                        gameloop()
 
-    screen.fill((255,255,255))
-    pygame.draw.rect(screen, (255,0,0), [x,y, width, height])
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = True
 
-    pygame.display.update()
-    clock.tick(30)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT and x1_change != 10:
+                    x1_change = -snake_body
+                    y1_change = 0
+                elif event.key == pygame.K_RIGHT and x1_change != -10:
+                    x1_change = snake_body
+                    y1_change = 0
+                elif event.key == pygame.K_UP and y1_change != 10:
+                    x1_change = 0
+                    y1_change = -snake_body
+                elif event.key == pygame.K_DOWN and y1_change != -10:
+                    x1_change = 0
+                    y1_change = snake_body
 
-message("You lost")
-pygame.display.update()
-time.sleep(2)
-pygame.quit()
-quit()
+        if x >= dis_width or x <= 0 or y >= dis_height or y <= 0:
+            run = True
+
+        x += x1_change
+        y += y1_change
+
+        screen.fill(white)
+
+
+        pygame.draw.rect(screen, blue, [fx,fy, snake_body, snake_body])               #food
+        pygame.draw.rect(screen, black, [x,y, snake_body, snake_body])                   #snake
+        pygame.display.update()
+
+        if x == fx and y == fy:
+            print("food")
+        clock.tick(snake_speed)                          #snake's speed
+
+    pygame.quit()
+    quit()
+
+gameloop()
