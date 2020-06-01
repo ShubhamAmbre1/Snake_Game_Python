@@ -8,11 +8,25 @@ height = 600
 white = (255,255,255)
 black = (0,0,0)
 
-x = 0
-y = 0
-
-
 snake_block = 30
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+def message(screen):
+    screen.fill(white)
+
+    largeText = pygame.font.SysFont('Arial', 30)
+    TextSurf, TextRect = text_objects('Game Over', largeText)
+    TextRect.center = ((width/2), (height/2))
+    screen.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+    time.sleep(2)
+
+def die():
+    pass
 
 def snake(screen,x_pos, y_pos, size):
     for i in size:
@@ -27,7 +41,9 @@ def gameloop():
     pygame.display.set_caption("Snake Game")
     clock = pygame.time.Clock()
 
-    global x, y
+    x = 0
+    y = 0
+
     running = True
     count = 1
     x_change = 0
@@ -38,7 +54,6 @@ def gameloop():
 
     foodx = round(random.randrange(0, width-snake_block)/snake_block)*snake_block
     foody = round(random.randrange(0, height-snake_block)/snake_block)*snake_block
-
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -84,9 +99,9 @@ def gameloop():
         pygame.display.update()
         if x > width-snake_block or x < 0 or y > height or y < 0:
             running = False
+            message(screen)
         clock.tick(10)          #snake speed or fps
     pygame.quit()
-
 
 if __name__ == "__main__":
 
