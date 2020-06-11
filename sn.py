@@ -38,6 +38,7 @@ def snake(screen, snake_color,x_pos, y_pos, size):
 def food(screen, foodx, foody):
     pygame.draw.rect(screen, black, [foodx, foody, snake_block, snake_block])
 
+
 def gameloop(color):
     pygame.init()
     screen = pygame.display.set_mode((width, height))
@@ -121,4 +122,4 @@ def gameloop(color):
 
 if __name__ == "__main__":
 
-    gameloop()
+    gameloop(black)
