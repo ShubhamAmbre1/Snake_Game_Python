@@ -1,4 +1,4 @@
 def main():
-    print('shiuban')
+    print("world")
 
 main()
