@@ -4,11 +4,14 @@ from sn import gameloop
 from tkinter import colorchooser
 
 root = Tk()
-root.geometry('780x600')
+#root.geometry('780x600')
 
 clr = None
 score = int()
 name_ent = StringVar()
+
+conn = sqlite3.connect('data.db')
+c = conn.cursor()
 
 def start():
     name = name_ent.get()
@@ -26,8 +29,8 @@ def snake_color():
     #print(clr)
 
 def sql(name, score):
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
+    if name == "":
+        name = "Unknown"
 
     c.execute("""
               CREATE TABLE if not exists data(
@@ -41,11 +44,20 @@ def sql(name, score):
     conn.commit()
     conn.close()
 
+c.execute("SELECT * FROM data")
+conn.commit()
+data = c.fetchall()
+for i in range(len(data)): #Rows
+    #for j in range(len(data)): #Columns
+    b = Label(root, text=data[i])
+    b.grid(row=i,column=3)
+#root.after(1000, update)
+
 label_user = Label(root, text="Enter Player Name: ").grid(row = 1, column = 0)
 entry_user = Entry(root, textvariable = name_ent).grid(row = 1, column = 1)
 
 start = Button(root, text = "Start", command = start).grid(row = 3, column = 0)
 color_button = Button(root, text= "Snake Color", command = snake_color ).grid(row=3, column=1)
 
-mainloop()
+root.mainloop()
 
