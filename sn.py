@@ -2,8 +2,8 @@ import pygame
 import random
 import time
 
-width = 780
-height = 600
+width = 600
+height = 400
 
 white = (255,255,255)
 black = (0,0,0)
@@ -78,7 +78,6 @@ def gameloop(color):
                 elif event.key == pygame.K_DOWN and y_change != -snake_block:
                     x_change = 0
                     y_change = snake_block
-
 
 
         y += y_change
