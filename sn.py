@@ -2,7 +2,7 @@ import pygame
 import random
 import time
 
-width = 600
+width = 500
 height = 400
 
 white = (255,255,255)
