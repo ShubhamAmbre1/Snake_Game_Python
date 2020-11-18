@@ -10,8 +10,28 @@ clr = None
 score = int()
 name_ent = StringVar()
 
-conn = sqlite3.connect('data.db')
+conn = sqlite3.connect('test.db')
+print("Connected to database")
 c = conn.cursor()
+c.execute("""
+          CREATE TABLE if not exists data(
+          player TEXT,
+          score REAL
+          )
+          """)
+conn.commit()
+
+c.execute("SELECT * FROM data")
+conn.commit()
+data = c.fetchall()
+
+for i in range(len(data)): #Rows
+    #for j in range(len(data)): #Columns
+    b = Label(root, text=data[i])
+    b.grid(row=i,column=3)
+#root.after(1000, update)
+
+
 
 def start():
     name = name_ent.get()
@@ -32,6 +52,7 @@ def sql(name, score):
     if name == "":
         name = "Unknown"
 
+    print("Working")
     c.execute("""
               CREATE TABLE if not exists data(
               player TEXT,
@@ -40,18 +61,20 @@ def sql(name, score):
               """)
     conn.commit()
 
-    c.execute("INSERT INTO data(player, score) VALUES(:player, :score)", {"player": name, "score": score})
+    c.execute("INSERT INTO data(player, score) VALUES(:player, :score)", {"player": name, "score": int(score)})
     conn.commit()
-    conn.close()
 
-c.execute("SELECT * FROM data")
-conn.commit()
-data = c.fetchall()
-for i in range(len(data)): #Rows
-    #for j in range(len(data)): #Columns
-    b = Label(root, text=data[i])
-    b.grid(row=i,column=3)
+
+    c.execute("SELECT * FROM data")
+    conn.commit()
+    data = c.fetchall()
+
+    for i in range(len(data)): #Rows
+        #for j in range(len(data)): #Columns
+        b = Label(root, text=data[i])
+        b.grid(row=i,column=3)
 #root.after(1000, update)
+
 
 label_user = Label(root, text="Enter Player Name: ").grid(row = 1, column = 0)
 entry_user = Entry(root, textvariable = name_ent).grid(row = 1, column = 1)
@@ -59,5 +82,7 @@ entry_user = Entry(root, textvariable = name_ent).grid(row = 1, column = 1)
 start = Button(root, text = "Start", command = start).grid(row = 3, column = 0)
 color_button = Button(root, text= "Snake Color", command = snake_color ).grid(row=3, column=1)
 
+
 root.mainloop()
 
+conn.close()
